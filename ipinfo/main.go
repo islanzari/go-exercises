@@ -23,13 +23,11 @@ type dataIP struct {
 }
 
 func verificationIP(ip string) error {
-	//	if validIP6(a) == false {
 	if !validIP4(ip) {
 		err := errors.New("zle podaj prawidlowe ip")
 		return err
 	}
 	return nil
-
 }
 
 func validIP4(ipAddress string) bool {
@@ -41,23 +39,25 @@ func validIP4(ipAddress string) bool {
 	return false
 }
 
-func requestIP(ip string) dataIP {
+func requestIP(ip string) (dataIP, error) {
+	var data dataIP
 	req, err := http.NewRequest(http.MethodGet, "http://ip-api.com/json/"+ip, nil)
 	if err != nil {
-		log.Fatal(err)
+		return data, err
+
 	}
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		return data, err
 	}
 	defer resp.Body.Close()
-	var data dataIP
+
 	decoder := json.NewDecoder(resp.Body)
 	err = decoder.Decode(&data)
 	if err != nil {
-		log.Fatal(err)
+		return data, err
 	}
-	return data
+	return data, err
 }
 
 func writingOut(data dataIP) {
@@ -69,14 +69,22 @@ func writingOut(data dataIP) {
 	fmt.Println("Loc: ", data.Lon, " ", data.Lat)
 	fmt.Println("Postal: ", data.Postal)
 }
+
 func main() {
 	var ip string
 	flag.StringVar(&ip, "ip", "8.8.8.9", "a string var")
 	flag.Parse()
+
 	err := verificationIP(ip)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	writingOut(requestIP(ip))
+
+	data, err := requestIP(ip)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	writingOut(data)
 }
