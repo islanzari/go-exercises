@@ -22,12 +22,8 @@ type dataIP struct {
 func main() {
 	var ip string
 
-	flag.StringVar(&ip, "ip", "8.8.8.8", "a string var")
+	flag.StringVar(&ip, "ip", "8.8.8.9", "a string var")
 	flag.Parse()
-
-	fmt.Println("ip:", ip)
-
-	fmt.Println("http://ip-api.com/json/" + ip)
 
 	req, err := http.NewRequest(http.MethodGet, "http://ip-api.com/json/"+ip, nil)
 	if err != nil {
@@ -46,5 +42,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(data)
+	fmt.Println("IP address: ", data.IPAddress)
+	fmt.Println("Hostname: ", data.HostName)
+	fmt.Println("City: ", data.City)
+	fmt.Println("Region: ", data.Region)
+	fmt.Println("Country: ", data.Coutry)
+	fmt.Println("Loc: ", data.Lon, " ", data.Lat)
+	fmt.Println("Postal: ", data.Postal)
+
 }
