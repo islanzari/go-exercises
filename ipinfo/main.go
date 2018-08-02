@@ -54,9 +54,6 @@ func requestIP(ip string) (dataIP, error) {
 
 	decoder := json.NewDecoder(resp.Body)
 	err = decoder.Decode(&data)
-	if err != nil {
-		return data, err
-	}
 	return data, err
 }
 
