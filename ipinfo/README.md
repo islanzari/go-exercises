@@ -18,19 +18,19 @@
   ```
 
 #### Dodatkowe zadania:
-  - walidacja czy podany adres IP jest poprawny
+  - walidacja czy podany adres IP jest poprawny (np przy pomocy pakietu [net](https://golang.org/pkg/net/) i typu IP)
   - podział struktury programu na [pakiety](https://www.golang-book.com/books/intro/11)  
   - stworzenie drugiej flagi, `geo`, która jest typem `bool` i która sprawia, że wyświetlane są tylko dane geograficzne podanego adresu IP
 
-##### Przykładowe użycie programu ma wyglądać następująco:
+##### Przykładowe użycie programu ma wyglądać następująco(dane wyjściowe mogą się różnić):
   ```
   go run *.go -ip 81.190.40.214
 
   IP address: 81.190.40.214
-  Hostname: mail.idesign.center
+  Organization: Multimedia Polska S. A.
   City: Szczecin
   Region: West Pomerania
-  Country: PL
+  Country: Poland
   Loc: 53.4358, 14.5094
   Postal: 71-132
   ```
