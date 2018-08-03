@@ -8,6 +8,7 @@
   Funkcja ma zwrócić dwa slice stringów, jeden zawierający wszystkie słowa które posiadają parzystą liczbę samogłosek oraz drugi, który zawiera słowa z nieparzystą liczbą samogłosek.
 
 #### Dodatkowe zadania:
+  - dodanie obsługi polskich samogłosek(ą, ę, ...)
   - stworzyć flagę `file`, która będzie wskazywać na plik, który ma zostać odczytany i wykorzystany jako argument do funkcji `words` (flaga ma domyślnie wskazywać na `lorem.txt`)
   - przebudować program by slice stringów zwracane przez funkcję `words` zostały zapisane do plików `odd.txt` oraz `even.txt`
 
@@ -22,3 +23,4 @@
   - dokumetnacja [io.Writer](https://golang.org/pkg/io/#Writer)
   - dokumentacja [os.File](https://golang.org/pkg/os/#File)
   - dokumentacja [ioutil](https://golang.org/pkg/io/ioutil/)
+  - dokumentacja [strings.Fields](https://golang.org/pkg/strings/#Fields)
