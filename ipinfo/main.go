@@ -1,63 +1,15 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
 	"flag"
 	"fmt"
 	"log"
-	"net/http"
-	"regexp"
-	"strings"
+
+	"github.com/islanzari/go-exercises/ipinfo/request"
+	"github.com/islanzari/go-exercises/ipinfo/valid"
 )
 
-type dataIP struct {
-	IPAddress string  `json:"query"`
-	HostName  string  `json:"org"`
-	City      string  `json:"city"`
-	Region    string  `json:"region"`
-	Coutry    string  `json:"country"`
-	Lon       float64 `json:"lon"`
-	Lat       float64 `json:"lat"`
-	Postal    string  `json:"zip"`
-}
-
-func verificationIP(ip string) error {
-	if !validIP4(ip) {
-		err := errors.New("zle podaj prawidlowe ip")
-		return err
-	}
-	return nil
-}
-
-func validIP4(ipAddress string) bool {
-	ipAddress = strings.Trim(ipAddress, " ")
-	re, _ := regexp.Compile(`^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$`)
-	if re.MatchString(ipAddress) {
-		return true
-	}
-	return false
-}
-
-func requestIP(ip string) (dataIP, error) {
-	var data dataIP
-	req, err := http.NewRequest(http.MethodGet, "http://ip-api.com/json/"+ip, nil)
-	if err != nil {
-		return data, err
-
-	}
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return data, err
-	}
-	defer resp.Body.Close()
-
-	decoder := json.NewDecoder(resp.Body)
-	err = decoder.Decode(&data)
-	return data, err
-}
-
-func writingOut(data dataIP) {
+func writingOut(data request.DataIP) {
 	fmt.Println("IP address: ", data.IPAddress)
 	fmt.Println("Organization: ", data.HostName)
 	fmt.Println("City: ", data.City)
@@ -66,22 +18,32 @@ func writingOut(data dataIP) {
 	fmt.Println("Loc: ", data.Lon, " ", data.Lat)
 	fmt.Println("Postal: ", data.Postal)
 }
+func Geo(data request.DataIP) {
+	fmt.Println("Loc: ", data.Lon, " ", data.Lat)
+	fmt.Println("City: ", data.City)
+	fmt.Println("Region: ", data.Region)
+}
 
 func main() {
 	var ip string
+	var geo bool
 	flag.StringVar(&ip, "ip", "8.8.8.9", "a string var")
+	flag.BoolVar(&geo, "geo", false, "a bool var")
 	flag.Parse()
 
-	err := verificationIP(ip)
-	if err != nil {
-		log.Println(err)
+	if !valid.ValidIP4(ip) {
+		fmt.Println("IP is invalids")
 		return
 	}
 
-	data, err := requestIP(ip)
+	data, err := request.RequestIP(ip)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	writingOut(data)
+	if geo == true {
+		Geo(data)
+	} else {
+		writingOut(data)
+	}
 }
