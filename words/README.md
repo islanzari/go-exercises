@@ -9,13 +9,14 @@
 
 #### Dodatkowe zadania:
   - dodanie obsługi polskich samogłosek(ą, ę, ...)
+  - pozbycie się wszystkich znaków specjalnych (zakres ASCII od 33 do 47)
   - stworzyć flagę `file`, która będzie wskazywać na plik, który ma zostać odczytany i wykorzystany jako argument do funkcji `words` (flaga ma domyślnie wskazywać na `lorem.txt`)
   - przebudować program by slice stringów zwracane przez funkcję `words` zostały zapisane do plików `odd.txt` oraz `even.txt`
 
 ##### Przykładowe użycie programu ma wyglądać następująco:
   ```
   go run main.go
-  [Give, Whose, life, moved ...][shall, together, signs, lights ...]
+  [Give Whose life moved ...][shall together signs lights ...]
   ```
 
 #### Przydatne materiały:
