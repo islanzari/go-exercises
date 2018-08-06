@@ -10,16 +10,24 @@ import (
 	"strings"
 )
 
-func splitStringToFile(fileName string, slice []string) {
+func splitStringToFile(fileName string, slice []string) error {
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {
-		log.Println("can't open file")
+		return err
 	}
 	for _, v := range slice {
 		_, err = f.WriteString(v + " ")
-
+		if err != nil {
+			return err
+		}
 	}
+	err = f.Close()
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
 func counts(fields []string) (even []string, odd []string) {
 	var count int
 	for _, v := range fields {
@@ -44,17 +52,24 @@ func counts(fields []string) (even []string, odd []string) {
 	return even, odd
 }
 
-func words(r io.Reader) (even []string, odd []string) {
+func words(r io.Reader) (even []string, odd []string, err error) {
+
 	b, err := ioutil.ReadAll(r)
 	if err != nil {
-		log.Fatal(err)
+		return nil, nil, err
 	}
 
 	fields := strings.Fields(string(b))
 	evenWords, oddWordls := counts(fields)
 	splitStringToFile("even.txt", evenWords)
+	if err != nil {
+		return nil, nil, err
+	}
 	splitStringToFile("odd.txt", oddWordls)
-	return evenWords, oddWordls
+	if err != nil {
+		return nil, nil, err
+	}
+	return evenWords, oddWordls, err
 }
 
 func main() {
