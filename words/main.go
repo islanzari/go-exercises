@@ -13,7 +13,7 @@ import (
 func splitStringToFile(fileName string, slice []string) {
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {
-		log.Println("can't open file lorem.txt")
+		log.Println("can't open file")
 	}
 	for _, v := range slice {
 		_, err = f.WriteString(v + " ")
