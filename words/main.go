@@ -10,6 +10,16 @@ import (
 	"strings"
 )
 
+func splitStringToFile(fileName string, slice []string) {
+	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0755)
+	if err != nil {
+		log.Println("can't open file lorem.txt")
+	}
+	for _, v := range slice {
+		_, err = f.WriteString(v + " ")
+
+	}
+}
 func counts(fields []string) (even []string, odd []string) {
 	var count int
 	for _, v := range fields {
@@ -42,21 +52,23 @@ func words(r io.Reader) (even []string, odd []string) {
 
 	fields := strings.Fields(string(b))
 	evenWords, oddWordls := counts(fields)
+	splitStringToFile("even.txt", evenWords)
+	splitStringToFile("odd.txt", oddWordls)
 	return evenWords, oddWordls
 }
 
 func main() {
 	var file string
-	flag.StringVar(&file, "file", "defult", "a bool var")
+	flag.StringVar(&file, "file", "default", "a bool var")
 	flag.Parse()
 
 	f, err := os.OpenFile("lorem.txt", os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("can't open file lorem.txt")
 	}
 
 	fmt.Println(words(f))
 	if err := f.Close(); err != nil {
-		log.Fatal(err)
+		log.Println("can't print function words")
 	}
 }
