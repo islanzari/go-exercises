@@ -33,7 +33,7 @@ będzie baza danych.
   - podawać URL do bazy za pomocą flagi `db` 
 
 #### Przydatne materiały:
-  - [ServeMux do ścieżek](https://golang.org/pkg/net/http/#ServeMux)
+  - [Router httprouter](https://github.com/julienschmidt/httprouter)
   - [Przykładowa aplikacja z todos](https://github.com/westonplatter/example-golang-todo) - nie wzorować się za mocno, jest słabo napisana i ma służyć tylko jako pomoc
   - [Obiekt sql.DB](https://golang.org/pkg/database/sql/#DB)
   - [Tutorial komunikacji Go z PostgreSQL](https://flaviocopes.com/golang-sql-database/)
