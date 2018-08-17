@@ -23,23 +23,19 @@ func (tm *TodosModel) UpdateToDo(id int, name string, description string) error 
 	return err
 }
 
-func (tm *TodosModel) FetchToDo(id int) Todo {
+func (tm *TodosModel) FetchToDo(id int) (Todo, error) {
 	todo := Todo{}
 	sqlStatement := `SELECT id, name, description, created_at, updated_at FROM todos where id = $1 `
 	row := tm.DB.QueryRow(sqlStatement, id)
 	err := row.Scan(&todo.ID, &todo.Name, &todo.Description, &todo.CreatedAt, &todo.UpdatedAt)
-	if err != nil {
-		panic(err)
-	}
-	return todo
+
+	return todo, err
 }
 
 func (tm *TodosModel) DeleteToDo(id int) error {
 	sqlStatement := ("DELETE FROM todos WHERE id = $1")
 	_, err := tm.DB.Exec(sqlStatement, id)
-	if err != nil {
-		fmt.Println("ERROR saving to db - ", err)
-	}
+
 	return err
 }
 
@@ -50,7 +46,7 @@ func (tm *TodosModel) FetchToDos() ([]Todo, error) {
 	if err != nil {
 		return todos, err
 	}
-	defer rows.Close()
+
 	for rows.Next() {
 		todo := Todo{}
 		err = rows.Scan(&todo.ID, &todo.Name, &todo.Description, &todo.CreatedAt, &todo.UpdatedAt)
@@ -59,11 +55,9 @@ func (tm *TodosModel) FetchToDos() ([]Todo, error) {
 		}
 		todos = append(todos, todo)
 	}
-	err = rows.Err()
-	if err != nil {
-		return todos, err
-	}
-	return todos, err
+
+	return todos, rows.Err()
+
 }
 
 func (tm *TodosModel) CreateToDo(name string, description string) error {
